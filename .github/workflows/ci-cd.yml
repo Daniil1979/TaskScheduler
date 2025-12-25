@@ -37,10 +37,6 @@ jobs:
           name: task-scheduler-jar
           path: target/*.jar
 
-      - name: Notify on failure
-        if: failure()
-        run: echo "Build or tests failed!"
-
   docker-build:
     needs: build-and-test
     runs-on: ubuntu-latest
@@ -80,4 +76,5 @@ jobs:
             docker run -d \
               --name task-scheduler \
               -p 8080:8080 \
+              --restart unless-stopped \
               ${{ secrets.DOCKER_USERNAME }}/task-scheduler:latest
